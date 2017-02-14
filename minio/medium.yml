@@ -1,0 +1,63 @@
+version: '2'
+
+services:
+  lb:
+    hostname: moslb
+    image: dockercloud/haproxy:1.6.1
+    fip: 209.177.92.159
+    size: M3
+    ports:
+      - "80:80"
+    links:
+      - minio1
+      - minio2
+      - minio3
+      - minio4
+  minio1:
+    hostname: minio1
+    image: minio/minio
+    size: S4
+    ports:
+      - "80:80"
+    volumes:
+      - "minio-disk-1:/export"
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server --address ":80" http://minio1/export http://minio2/export http://minio3/export http://minio4/export
+  minio2:
+    hostname: minio2
+    image: minio/minio
+    size: S4
+    ports:
+      - "80:80"
+    volumes:
+      - "minio-disk-2:/export"
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server --address ":80" http://minio1/export http://minio2/export http://minio3/export http://minio4/export
+  minio3:
+    hostname: minio3
+    image: minio/minio
+    size: S4
+    ports:
+      - "80:80"
+    volumes:
+      - "minio-disk-3:/export"
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server --address ":80" http://minio1/export http://minio2/export http://minio3/export http://minio4/export
+  minio4:
+    hostname: minio4
+    image: minio/minio
+    size: S4
+    ports:
+      - "80:80"
+    volumes:
+      - "minio-disk-4:/export"
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server --address ":80" http://minio1/export http://minio2/export http://minio3/export http://minio4/export
